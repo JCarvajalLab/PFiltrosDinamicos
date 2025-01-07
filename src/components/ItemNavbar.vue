@@ -10,8 +10,8 @@
     <template v-slot:append>
         <div class="d-none d-md-flex" style="">
             <v-btn text @click="goHome" style="margin: 0 10px;">Inicio</v-btn>
-            <v-btn text @click="goProductos" style="margin: 0 10px;">Formulario</v-btn>
-            <v-btn text @click="goInfo" style="margin: 0 10px;">Listado</v-btn>
+            <v-btn text @click="goFormulario" style="margin: 0 10px;">Formulario</v-btn>
+            <v-btn text @click="goListado" style="margin: 0 10px;">Listado</v-btn>
             <v-btn text @click="goContacto" style="margin: 0 10px;">Contacto</v-btn>
         </div>
 
@@ -30,11 +30,11 @@
             <v-list-item-title>Inicio</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item @click="goProductos">
+        <v-list-item @click="goFormulario">
             <v-list-item-title>Todos los Productos</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item @click="goInfo">
+        <v-list-item @click="goListado">
             <v-list-item-title>Información</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
@@ -55,27 +55,21 @@ export default {
         };
     },
     methods: {
-        goToHome() {
-            this.$router.push({
-                name: 'home'
-            });
-            this.drawer = false;
-        },
         goHome() {
             this.$router.push({
                 name: 'home'
             });
             this.drawer = false;
         },
-        goProductos() {
+        goFormulario() {
             this.$router.push({
-                name: 'allproductos'
+                name: 'taskForm'
             });
             this.drawer = false;
         },
-        goInfo() {
+        goListado() {
             this.$router.push({
-                name: 'informacion'
+                name: 'taskList'
             });
             this.drawer = false;
         },
