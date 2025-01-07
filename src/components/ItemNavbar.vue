@@ -9,9 +9,9 @@
 
     <template v-slot:append>
         <div class="d-none d-md-flex" style="">
-            <v-btn text @click="goHome" style="margin: 0 10px;">Inicio</v-btn>
-            <v-btn text @click="goFormulario" style="margin: 0 10px;">Formulario</v-btn>
             <v-btn text @click="goListado" style="margin: 0 10px;">Listado</v-btn>
+            <v-btn text @click="goFormulario" style="margin: 0 10px;">Formulario</v-btn>
+
             <v-btn text @click="goContacto" style="margin: 0 10px;">Contacto</v-btn>
         </div>
 
@@ -26,10 +26,6 @@
 <!-- Menú de navegación lateral -->
 <v-navigation-drawer v-model="drawer" app temporary>
     <v-list>
-        <v-list-item @click="goHome">
-            <v-list-item-title>Inicio</v-list-item-title>
-        </v-list-item>
-        <v-divider></v-divider>
         <v-list-item @click="goFormulario">
             <v-list-item-title>Todos los Productos</v-list-item-title>
         </v-list-item>
@@ -55,12 +51,6 @@ export default {
         };
     },
     methods: {
-        goHome() {
-            this.$router.push({
-                name: 'home'
-            });
-            this.drawer = false;
-        },
         goFormulario() {
             this.$router.push({
                 name: 'taskForm'

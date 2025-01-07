@@ -1,15 +1,27 @@
 <template>
-  <div>
-    <h1>Formulario de tareas</h1>
-  </div>
+<ItemNavbar />
+<div>
+    <h1>
+        Formulario
+    </h1>
+</div>
+
+<ItemFooter />
 </template>
 
 <script>
-export default {
+import ItemNavbar from '../components/ItemNavbar.vue'
+import ItemFooter from '../components/ItemFooter.vue'
 
+export default {
+    name: 'HomeView',
+    components: {
+        ItemNavbar,
+        ItemFooter
+    }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

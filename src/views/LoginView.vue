@@ -93,7 +93,7 @@ export default {
                         logueado: true,
                     });
                     this.$router.push({
-                        name: "home"
+                        name: "login"
                     });
                 } else {
                     alert("Credenciales incorrectas");
@@ -109,7 +109,7 @@ export default {
         },
         goHome() {
             this.$router.push({
-                name: "home"
+                name: "taskList"
             });
         },
         goRecoverAccount() {
