@@ -1,18 +1,27 @@
 <template>
-  <HelloWorld />
+<ItemNavbar />
+<div>
+    <h1>
+        homeview
+    </h1>
+</div>
+
+<ItemFooter />
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import ItemNavbar from '../components/ItemNavbar.vue'
+import ItemFooter from '../components/ItemFooter.vue'
 
-// Components
-import HelloWorld from '../components/HelloWorld.vue';
-
-export default defineComponent({
-  name: 'HomeView',
-
-  components: {
-    HelloWorld,
-  },
-});
+export default {
+    name: 'HomeView',
+    components: {
+        ItemNavbar,
+        ItemFooter
+    }
+}
 </script>
+
+<style scoped>
+
+</style>
