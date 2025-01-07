@@ -4,7 +4,6 @@
     <v-main>
         <v-container>
             <v-data-table :headers="headers" :items="filteredTasks" :sort-by="[{ key: 'id', order: 'asc' }]">
-                <!-- Slot para la barra superior (filtros) -->
                 <template #top>
                     <v-toolbar flat>
                         <v-toolbar-title>Lista de Tareas</v-toolbar-title>
@@ -21,23 +20,17 @@
                         </v-btn>
                     </v-toolbar>
                 </template>
-
-                <!-- Slot para personalizar las filas -->
                 <template #item="{ item }">
                     <tr>
-                        <!-- Columna ID -->
                         <td>{{ item.id }}</td>
-                        <!-- Columna Título -->
                         <td :class="{ 'task-completed': item.completed }">
                             {{ item.title }}
                         </td>
-                        <!-- Columna Completada (Checkbox) -->
                         <td>
                             <v-checkbox v-model="item.completed" :disabled="item.completed" @change="updateTaskStatus(item)"></v-checkbox>
                         </td>
-                        <!-- Columna Acciones (Ver Detalle) -->
                         <td>
-                            <v-btn color="primary" size="small" @click="viewTaskDetails(item)">
+                            <v-btn color="primary" size="small" @click="showTaskDetails(item)">
                                 Ver Detalle
                             </v-btn>
                         </td>
@@ -47,12 +40,16 @@
         </v-container>
     </v-main>
     <ItemFooter />
+    <v-dialog v-model="taskDetailsDialog" width="auto">
+        <TaskItem :task="taskDetails" />
+    </v-dialog>
 </v-app>
 </template>
 
 <script>
 import ItemNavbar from '../components/ItemNavbar.vue';
 import ItemFooter from '../components/ItemFooter.vue';
+import TaskItem from '../components/TaskItem.vue';
 import axios from 'axios';
 
 export default {
@@ -60,6 +57,7 @@ export default {
     components: {
         ItemNavbar,
         ItemFooter,
+        TaskItem,
     },
     data() {
         return {
@@ -68,22 +66,24 @@ export default {
             filter: 'all', // Filtro actual
             headers: [{
                     title: 'ID',
-                    key: 'id'
+                    key: 'id',
                 },
                 {
                     title: 'Título',
-                    key: 'title'
+                    key: 'title',
                 },
                 {
                     title: 'Completada',
-                    key: 'completed'
+                    key: 'completed',
                 },
                 {
                     title: 'Acciones',
                     key: 'actions',
-                    sortable: false
+                    sortable: false,
                 },
             ],
+            taskDetailsDialog: false,
+            taskDetails: {},
         };
     },
     created() {
@@ -108,7 +108,7 @@ export default {
                 const tasksStatus = JSON.parse(localStorage.getItem('tasksStatus')) || {};
 
                 // Aplicar el estado guardado a las tareas
-                this.tasks = this.tasks.map(task => {
+                this.tasks = this.tasks.map((task) => {
                     if (Object.prototype.hasOwnProperty.call(tasksStatus, task.id)) {
                         task.completed = tasksStatus[task.id];
                     }
@@ -155,15 +155,10 @@ export default {
             localStorage.setItem('tasksStatus', JSON.stringify(tasksStatus));
         },
 
-        // Redirigir a la vista de detalles de la tarea
-        viewTaskDetails(task) {
-            console.log('Ver detalles de la tarea:', task);
-            this.$router.push({
-                name: 'TaskDetail',
-                params: {
-                    id: task.id
-                }
-            });
+        // Mostrar detalles de la tarea
+        showTaskDetails(task) {
+            this.taskDetails = task;
+            this.taskDetailsDialog = true;
         },
 
         // Limpiar el LocalStorage

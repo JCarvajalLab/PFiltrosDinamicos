@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import LoginView from'../views/LoginView.vue'
 import TaskForm from '../views/TaskForm.vue'
-import TaskItem from '../views/TaskItem.vue'
+import TaskItem from '../components/TaskItem.vue'
 import TaskList from '../views/TaskList.vue'
 import ContactView from '../views/ContactView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
