@@ -87,7 +87,15 @@ export default {
         };
     },
     created() {
-        this.fetchTasks();
+        this.fetchTasks(); // Cargar tareas al crear el componente
+    },
+    mounted() {
+        // Limpiar el LocalStorage cuando el usuario cierre o recargue la página
+        window.addEventListener('beforeunload', this.clearLocalStorage);
+    },
+    beforeUnmount() {
+        // Remover el listener cuando el componente se desmonte
+        window.removeEventListener('beforeunload', this.clearLocalStorage);
     },
     methods: {
         // Obtener tareas desde la API
@@ -95,6 +103,18 @@ export default {
             try {
                 const response = await axios.get('https://jsonplaceholder.typicode.com/todos');
                 this.tasks = response.data;
+
+                // Recuperar el estado desde LocalStorage
+                const tasksStatus = JSON.parse(localStorage.getItem('tasksStatus')) || {};
+
+                // Aplicar el estado guardado a las tareas
+                this.tasks = this.tasks.map(task => {
+                    if (Object.prototype.hasOwnProperty.call(tasksStatus, task.id)) {
+                        task.completed = tasksStatus[task.id];
+                    }
+                    return task;
+                });
+
                 this.filteredTasks = this.tasks; // Inicialmente mostrar todas las tareas
             } catch (error) {
                 console.error('Error fetching tasks:', error);
@@ -120,16 +140,24 @@ export default {
                     completed: task.completed,
                 });
                 console.log('Tarea actualizada:', task);
+
+                // Guardar el estado en LocalStorage
+                this.saveTaskStatusToLocalStorage(task);
             } catch (error) {
                 console.error('Error updating task:', error);
             }
         },
 
-        // Redirigir a la vista de detalles de la t area
+        // Guardar el estado de la tarea en LocalStorage
+        saveTaskStatusToLocalStorage(task) {
+            const tasksStatus = JSON.parse(localStorage.getItem('tasksStatus')) || {};
+            tasksStatus[task.id] = task.completed;
+            localStorage.setItem('tasksStatus', JSON.stringify(tasksStatus));
+        },
+
+        // Redirigir a la vista de detalles de la tarea
         viewTaskDetails(task) {
-            // Aquí puedes implementar la lógica para redirigir a la vista de detalles
             console.log('Ver detalles de la tarea:', task);
-            // Por ejemplo, podrías usar Vue Router para navegar a otra ruta
             this.$router.push({
                 name: 'TaskDetail',
                 params: {
@@ -137,13 +165,20 @@ export default {
                 }
             });
         },
+
+        // Limpiar el LocalStorage
+        clearLocalStorage() {
+            localStorage.removeItem('tasksStatus');
+        },
     },
 };
 </script>
 
 <style scoped>
 .task-completed {
-  text-decoration: line-through; /* Subrayado que cruza el texto */
-  color: gray; /* Opcional: Cambiar el color del texto para que sea más notorio */
+    text-decoration: line-through;
+    /* Subrayado que cruza el texto */
+    color: gray;
+    /* Opcional: Cambiar el color del texto para que sea más notorio */
 }
 </style>
