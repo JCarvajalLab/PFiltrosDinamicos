@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from'../views/LoginView.vue'
 import TaskForm from '../views/TaskForm.vue'
 import TaskItem from '../views/TaskItem.vue'
 import TaskList from '../views/TaskList.vue'
@@ -8,6 +9,11 @@ import NotFoundView from '../views/NotFoundView.vue'
 const routes = [
   {
     path: '/',
+    name: 'login',
+    component: LoginView
+  },
+  {
+    path: '/home',
     name: 'home',
     component: HomeView
   },
