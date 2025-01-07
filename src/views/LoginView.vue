@@ -93,7 +93,7 @@ export default {
                         logueado: true,
                     });
                     this.$router.push({
-                        name: "login"
+                        name: "taskList"
                     });
                 } else {
                     alert("Credenciales incorrectas");

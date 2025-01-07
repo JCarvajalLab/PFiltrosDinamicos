@@ -51,6 +51,9 @@ import ItemNavbar from '../components/ItemNavbar.vue';
 import ItemFooter from '../components/ItemFooter.vue';
 import TaskItem from '../components/TaskItem.vue';
 import axios from 'axios';
+import {
+    mapState
+} from 'vuex'
 
 export default {
     name: 'TaskListView',
@@ -58,6 +61,11 @@ export default {
         ItemNavbar,
         ItemFooter,
         TaskItem,
+    },
+    provide() {
+        return {
+            addTask: this.addTask,
+        };
     },
     data() {
         return {
@@ -93,6 +101,9 @@ export default {
         // Limpiar el LocalStorage cuando el usuario cierre o recargue la página
         window.addEventListener('beforeunload', this.clearLocalStorage);
     },
+    computed: {
+        ...mapState(['tasks'])
+    },
     beforeUnmount() {
         // Remover el listener cuando el componente se desmonte
         window.removeEventListener('beforeunload', this.clearLocalStorage);
@@ -119,6 +130,12 @@ export default {
             } catch (error) {
                 console.error('Error fetching tasks:', error);
             }
+        },
+
+        // Agregar tarea a la lista
+        addTask(task) {
+            this.tasks.push(task);
+            this.filteredTasks = this.tasks;
         },
 
         // Filtrar tareas según el estado
